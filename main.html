@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script src="sketch.js"></script>
+  </head>
+<body>
+
+<style>
+  html{
+    background-color: black;
+    font-family: 'Abel', sans-serif;
+    color:white;
+  }
+  .trans{
+    color:transparent;
+    font-size: 1px;
+  }
+
+  .time{
+    font-size: 3em;
+  }
+
+  .flex{
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items:center;
+    width:100%;
+  }
+
+  button{
+    background-color: white;
+    border:white;
+    font-family: 'Abel', sans-serif;
+    color:black;
+    width: 4em;
+    height: 4em;
+    font-size: 2em;
+    border-radius: 50%;
+  }
+
+ .label{
+    font-size: 3em;
+  }
+
+  @keyframes rainbowButton{
+    0% {background-color:white}
+    20%{background-color:red}
+    40%{background-color:yellow}
+    60%{background-color:blue}
+    80%{background-color:red}
+    100%{background-color:white}
+  }
+
+
+</style>
+<div class="flex">
+
+<p class="label">Track How Long You Have Been Productive.</p>
+
+</div>
+
+
+<div class= "flex" >
+<button id = "recbutton" onclick="startCount()">record</button>
+  
+<button id="pausebutton" onclick="displayTime()">pause</button>
+
+</div>
+
+<p class= "trans" id="time1"></p>  <p class="trans" id="time2"></p>
+<p class="trans" id="day"></p>
+
+<div class="flex">
+
+  <div >
+    <p class="label">H</p>  
+    <p class = "time" id="hour"></p>
+  </div>
+
+  <div >
+    <p class="label">M</p>  
+    <p class = "time" id="minute"></p>
+  </div>
+   
+  <div >
+    <p class="label">S</p>  
+    <p class = "time" id="second"></p>
+  </div>
+
+
+</div>
+
+<script>
+var scount =0, fcount =0;
+var day=0, hour=0,minute=0,second=0;
+function startCount(){
+  if(scount===0){
+    beginTime();
+  }
+  scount++;
+}
+
+function beginTime() {
+  var d = new Date();
+  var n = d.getTime();
+  document.getElementById("time1").innerHTML = n;
+  document.getElementById("recbutton").style.animation = "rainbowButton 5s infinite";
+  document.getElementById("pausebutton").style.animation = "none";
+}
+  
+  
+function endTime() {
+  var d = new Date();
+  var n = d.getTime();
+  document.getElementById("time2").innerHTML = n;
+  document.getElementById("recbutton").style.animation = "none";
+  document.getElementById("pausebutton").style.animation = "rainbowButton 5s infinite";
+}
+
+
+function displayTime(){
+  var d = 0;
+  var h = 0;
+  var m = 0;
+  var s = 0;
+
+  endTime();
+
+  var b = document.getElementById("time1").innerHTML;
+  var e = document.getElementById("time2").innerHTML;
+  var diff = e-b;
+
+
+  diff = diff/1000;
+  d = Math.floor(diff/86400);
+  diff = diff % 86400;
+  h = Math.floor(diff/3600);
+  diff = diff % 3600;
+  m = Math.floor(diff/60);
+  s = Math.floor(diff%60);
+  times = logTime( h, m ,s);
+
+  document.getElementById("day").innerHTML = times[0];
+  document.getElementById("hour").innerHTML = times[1];
+  document.getElementById("minute").innerHTML = times[2];
+  document.getElementById("second").innerHTML = times[3];
+
+  d = 0;
+  h = 0;
+  m = 0;
+  s = 0;
+}
+
+function logTime( h , m ,s){
+  hour += h;
+  if(minute+=m>60){
+    hour+= Math.floor(m/60);
+    minute += m%60;
+  }
+  else{
+    minute+=m;
+  }
+  if(minute+=m>60){
+    minute+= Math.floor(s/60);
+    second += s%60;
+  }
+  else{
+    second += s;
+  }
+  var times = [day,hour,minute,second];
+  return(times);
+}
+  
+</script>
+
+</body>
+</html>
